@@ -1,0 +1,31 @@
+name: Deploy Web on Release
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install modules
+        run: yarn install --immutable
+
+      - name: Build web
+        run: yarn build:web
+        env:
+          ROOT_URL: ${{ secrets.ROOT_URL }}
+          onesignalAppId: ${{ secrets.onesignalAppId}}
+          facebookAppId: ${{ secrets.facebookAppId }}
+          googleClientIdWeb: ${{ secrets.googleClientIdWeb }}
+          googleClientIdAndroid: ${{ secrets.googleClientIdAndroid }}
+          googleClientIdIOS: ${{ secrets.googleClientIdIOS }}
+          sentryAuthToken: ${{ secrets.sentryAuthToken }}
+          expoProjectId: ${{ secrets.expoProjectId }}

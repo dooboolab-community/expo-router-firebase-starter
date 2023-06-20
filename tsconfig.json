@@ -1,0 +1,31 @@
+{
+  "extends": "expo/tsconfig.base",
+  "jsx": "react-jsx",
+  "compilerOptions": {
+    "typeRoots": [
+      "expo-router/ts-declarations",
+      "./@types",
+      "./node_modules/@types"
+    ]
+  },
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "**/*.test.tsx",
+    "**/*.spec.ts"
+  ],
+  "exclude": ["node_modules"],
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    }
+  },
+  "files": [
+    "environment.d.ts",
+    "src/styled.d.ts"
+  ]
+}

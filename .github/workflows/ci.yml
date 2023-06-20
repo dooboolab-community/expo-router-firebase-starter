@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: yarn
+
+      - name: Install modules
+        run: YARN_CHECKSUM_BEHAVIOR=update yarn --immutable
+
+      - name: Check linting
+        run: yarn lint:all
+
+      - name: Build typescript
+        run: yarn tsc
+
+      - name: Remove dist
+        run: rm -rf ./dist
+
+      - name: Test
+        run: yarn test --coverage --silent
+
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v1
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     directory: ./coverage/
+      #     flags: unittests
+      #     name: codecov-umbrella
+      #     fail_ci_if_error: false
+      #     path_to_write_report: ./coverage/codecov_report.gz
