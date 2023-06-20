@@ -11,8 +11,8 @@ const buildNumber = 63;
 
 export default ({config}: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'dooboo',
-  scheme: 'dooboo',
+  name: 'dooboo-supabase',
+  scheme: 'dooboo-supabase',
   slug: 'dooboo-expo-router',
   privacy: 'public',
   platforms: ['ios', 'android', 'web'],

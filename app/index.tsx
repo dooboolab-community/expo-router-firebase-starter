@@ -1,11 +1,11 @@
-import {type ReactElement, useEffect} from 'react';
+import {type ReactElement} from 'react';
 import styled, {css} from '@emotion/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button, SwitchToggle, useDooboo} from 'dooboo-ui';
-import {SplashScreen, Stack, useRouter} from 'expo-router';
+import {Stack, useRouter} from 'expo-router';
 
-import {t} from '../../src/STRINGS';
-import {AsyncStorageKey} from '../../src/utils/constants';
+import {t} from '../src/STRINGS';
+import {AsyncStorageKey} from '../src/utils/constants';
 
 const Container = styled.View`
   background-color: ${({theme}) => theme.bg.basic};
@@ -27,18 +27,6 @@ export default function Home(): ReactElement {
   const {themeType, changeThemeType} = useDooboo();
   const {push} = useRouter();
 
-  const {assetLoaded} = useDooboo();
-
-  useEffect(() => {
-    if (assetLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [assetLoaded]);
-
-  if (!assetLoaded) {
-    return null;
-  }
-
   return (
     <Container>
       <Stack.Screen
@@ -51,9 +39,24 @@ export default function Home(): ReactElement {
           isOn={themeType === 'dark'}
           onPress={() => {
             const nextTheme = themeType === 'dark' ? 'light' : 'dark';
-            AsyncStorage.setItem(AsyncStorageKey.DarkMode, nextTheme);
+            AsyncStorage.setItem(
+              AsyncStorageKey.DarkMode,
+              themeType === 'dark' ? 'false' : 'true',
+            );
             changeThemeType(nextTheme);
           }}
+        />
+        <Button
+          style={css`
+            margin-top: 28px;
+          `}
+          styles={{
+            text: css`
+              font-family: Pretendard-Bold;
+            `,
+          }}
+          text={t('SIGN_IN')}
+          onPress={() => push('/sign-in')}
         />
         <Button
           style={css`

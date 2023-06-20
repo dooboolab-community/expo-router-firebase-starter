@@ -1,5 +1,16 @@
 {
   "DETAILS": "Details",
   "HOME": "Home",
-  "SEE_DETAILS": "See Details"
+  "SEE_DETAILS": "See Details",
+  "PRIVACY_POLICY": "Privacy Policy",
+  "INVALID_CREDENTIALS": "Invalid credentials",
+  "LOGIN_WITH": "Log in with %{name}",
+  "OR": "or",
+  "EMAIL": "Email",
+  "PASSWORD": "Password",
+  "SIGN_IN": "Sign in",
+  "NO_ACCOUNT": "Don't have an account?",
+  "CREATE_ACCOUNT": "Create an account",
+  "SIGN_UP_POLICY_AGREEMENT": "We consider that you agree with {{termsForAgreement}} and {{privacyAndPolicy}} by going onto next step.",
+  "TERMS_OF_SERVICE": "Terms of Service"
 }

@@ -3,7 +3,7 @@ import styled, {css} from '@emotion/native';
 import {Typography} from 'dooboo-ui';
 import {Stack} from 'expo-router';
 
-import {t} from '../../src/STRINGS';
+import {t} from '../src/STRINGS';
 
 const Container = styled.View`
   flex: 1;
