@@ -35,6 +35,13 @@ export default ({config}: ConfigContext): ExpoConfig => ({
         // devTeam: '',
       },
     ],
+    // https://stackoverflow.com/a/74085696/8841562
+    [
+      'expo-build-properties',
+      {
+        ios: {useFrameworks: 'static'},
+      },
+    ],
   ],
   splash: {
     image: './assets/splash.png',
@@ -50,7 +57,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
     onesignalAppId: process.env.onesignalAppId,
     expoProjectId: process.env.expoProjectId,
     firebaseWebApiKey: process.env.firebaseWebApiKey,
-    // eas: {projectId: ''},
+    eas: {projectId: process.env.expoProjectId},
   },
   updates: {
     fallbackToCacheTimeout: 0,
@@ -65,7 +72,7 @@ export default ({config}: ConfigContext): ExpoConfig => ({
   },
   ios: {
     buildNumber: buildNumber.toString(),
-    bundleIdentifier: 'com.dooboolab',
+    bundleIdentifier: 'io.dooboo.pro',
     associatedDomains: [`applinks:${DEEP_LINK_URL}`],
     supportsTablet: true,
     entitlements: {
@@ -74,8 +81,10 @@ export default ({config}: ConfigContext): ExpoConfig => ({
     infoPlist: {
       CFBundleAllowMixedLocalizations: true,
     },
+    googleServicesFile: './GoogleService-Info.plist',
   },
   android: {
+    package: 'io.dooboo.pro',
     userInterfaceStyle: 'automatic',
     permissions: [
       'RECEIVE_BOOT_COMPLETED',
@@ -90,19 +99,18 @@ export default ({config}: ConfigContext): ExpoConfig => ({
       foregroundImage: './assets/adaptive_icon.png',
       backgroundColor: '#2F2F2F',
     },
-    // package: 'com.dooboolab',
-    // intentFilters: [
-    //   {
-    //     action: 'VIEW',
-    //     autoVerify: true,
-    //     data: {
-    //       scheme: 'https',
-    //       host: DEEP_LINK_URL,
-    //       pathPrefix: '/',
-    //     },
-    //     category: ['BROWSABLE', 'DEFAULT'],
-    //   },
-    // ],
+    intentFilters: [
+      {
+        action: 'VIEW',
+        autoVerify: true,
+        data: {
+          scheme: 'https',
+          host: DEEP_LINK_URL,
+          pathPrefix: '/',
+        },
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
+    ],
   },
   description: 'Starter project from dooboo-cli.',
   web: {bundler: 'metro'},
