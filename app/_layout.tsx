@@ -10,11 +10,13 @@ import {useDooboo} from 'dooboo-ui';
 import StatusBarBrightness from 'dooboo-ui/uis/StatusbarBrightness';
 import {SplashScreen, Stack} from 'expo-router';
 import * as SystemUI from 'expo-system-ui';
+import * as WebBrowser from 'expo-web-browser';
 
 import RootProvider from '../src/providers';
 import {AsyncStorageKey} from '../src/utils/constants';
 
 SplashScreen.preventAutoHideAsync();
+WebBrowser.maybeCompleteAuthSession();
 
 function Layout(): ReactElement | null {
   const {assetLoaded, theme} = useDooboo();

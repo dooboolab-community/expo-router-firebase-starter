@@ -10,8 +10,8 @@ import useKeyboard from '../../src/hooks/useKeyboard';
 import {t} from '../../src/STRINGS';
 import ButtonSocialSignIn from '../../src/uis/ButtonSocialSignIn';
 import ModalCloseIcon from '../../src/uis/ModalCloseIcon';
-import ModalHeader from '../../src/uis/ModalHeader';
 import {validateEmail} from '../../src/utils/common';
+import {SvgIcon} from '../../src/utils/icons';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -75,9 +75,6 @@ export default function SignInModal(): ReactElement {
 
   return (
     <Container>
-      <ModalHeader>
-        <ModalCloseIcon />
-      </ModalHeader>
       <ScrollView
         style={css`
           flex: 1;
@@ -86,10 +83,17 @@ export default function SignInModal(): ReactElement {
           align-items: center;
         `}
       >
+        <SvgIcon
+          width={80}
+          height={80}
+          style={css`
+            margin-top: 60px;
+            margin-bottom: 8px;
+          `}
+        />
         {/* Title */}
         <Typography.Heading1
           style={css`
-            margin-top: -8px;
             margin-bottom: 20px;
           `}
         >
@@ -283,6 +287,16 @@ export default function SignInModal(): ReactElement {
           ) : null}
         </Content>
       </ScrollView>
+      {/* Modal close icon */}
+      <View
+        style={css`
+          position: absolute;
+          top: 16px;
+          right: 16px;
+        `}
+      >
+        <ModalCloseIcon />
+      </View>
     </Container>
   );
 }

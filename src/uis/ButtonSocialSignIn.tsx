@@ -5,9 +5,10 @@ import {Platform} from 'react-native';
 import {css} from '@emotion/native';
 import {Button, Icon, IconButton, useDooboo} from 'dooboo-ui';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import {Prompt, ResponseType} from 'expo-auth-session';
+import {makeRedirectUri, Prompt, ResponseType} from 'expo-auth-session';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
+import Constants, {ExecutionEnvironment} from 'expo-constants';
 
 import {
   expoProjectId,
@@ -34,6 +35,19 @@ export function ButtonSocialSignIn({
 }: Props): ReactElement {
   const {theme} = useDooboo();
 
+  const appleLogin = async (): Promise<void> => {
+    const credential = await AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+      ],
+    });
+
+    const {identityToken} = credential;
+
+    console.log('apple identityToken', identityToken);
+  };
+
   const [googleRequest, googleResponse, googlePromptAsync] =
     Google.useAuthRequest({
       prompt: Prompt.SelectAccount,
@@ -43,6 +57,7 @@ export function ButtonSocialSignIn({
       responseType: Platform.select({
         web: ResponseType.Token,
       }),
+      clientId: googleClientIdIOS,
       androidClientId: googleClientIdAndroid,
       iosClientId: googleClientIdIOS,
       webClientId: googleClientIdWeb,
@@ -82,6 +97,9 @@ export function ButtonSocialSignIn({
             break;
           case 'facebook':
             facebookPromptAsync();
+            break;
+          case 'apple':
+            appleLogin();
             break;
           default:
           // Not implemented yet

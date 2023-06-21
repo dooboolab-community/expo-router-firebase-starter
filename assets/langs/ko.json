@@ -13,5 +13,6 @@
   "NO_ACCOUNT": "계정이 없으신가요?",
   "CREATE_ACCOUNT": "계정 만들기",
   "SIGN_UP_POLICY_AGREEMENT": "다음 단계로 진행함으로써 {{termsForAgreement}}와 {{privacyAndPolicy}}에 동의하는 것으로 간주합니다.",
-  "TERMS_OF_SERVICE": "서비스 이용 약관"
+  "TERMS_OF_SERVICE": "서비스 이용 약관",
+  "RELOAD": "새로고침"
 }

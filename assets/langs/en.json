@@ -13,5 +13,6 @@
   "NO_ACCOUNT": "No account?",
   "CREATE_ACCOUNT": "Create an account",
   "SIGN_UP_POLICY_AGREEMENT": "We consider that you agree with {{termsForAgreement}} and {{privacyAndPolicy}} by going onto next step.",
-  "TERMS_OF_SERVICE": "Terms of Service"
+  "TERMS_OF_SERVICE": "Terms of Service",
+  "RELOAD": "Reload"
 }
