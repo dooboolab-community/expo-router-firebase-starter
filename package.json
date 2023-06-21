@@ -1,5 +1,5 @@
 {
-  "name": "dooboo",
+  "name": "dooboo pro",
   "version": "0.0.1",
   "main": "index",
   "scripts": {
@@ -27,7 +27,7 @@
     "@sentry/react-native": "4.15.2",
     "@shopify/flash-list": "1.4.0",
     "date-fns": "^2.30.0",
-    "dooboo-ui": "0.2.8-rc.2",
+    "dooboo-ui": "^0.2.8",
     "expo": "~48.0.19",
     "expo-apple-authentication": "~6.0.1",
     "expo-application": "~5.1.1",

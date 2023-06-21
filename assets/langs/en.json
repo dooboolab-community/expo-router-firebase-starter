@@ -9,7 +9,8 @@
   "EMAIL": "Email",
   "PASSWORD": "Password",
   "SIGN_IN": "Sign in",
-  "NO_ACCOUNT": "Don't have an account?",
+  "SIGN_IN_WITH_PROVIDER": "Sign in with {{provider}}",
+  "NO_ACCOUNT": "No account?",
   "CREATE_ACCOUNT": "Create an account",
   "SIGN_UP_POLICY_AGREEMENT": "We consider that you agree with {{termsForAgreement}} and {{privacyAndPolicy}} by going onto next step.",
   "TERMS_OF_SERVICE": "Terms of Service"

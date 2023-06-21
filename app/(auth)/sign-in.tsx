@@ -4,7 +4,6 @@ import type {TextInput} from 'react-native';
 import {Linking, Platform, ScrollView, View} from 'react-native';
 import styled, {css} from '@emotion/native';
 import {Button, EditText, Icon, Typography, useDooboo} from 'dooboo-ui';
-import * as AppleAuthentication from 'expo-apple-authentication';
 import {Link, useNavigation, useRouter} from 'expo-router';
 
 import useKeyboard from '../../src/hooks/useKeyboard';
@@ -24,14 +23,14 @@ const Content = styled.View`
   width: 100%;
   max-width: 600px;
   padding: 32px 48px;
-  gap: 16px;
+  gap: 20px;
 `;
 
 export default function SignInModal(): ReactElement {
   const {back, replace} = useRouter();
   const {canGoBack} = useNavigation();
   const [keyboardHeight] = useKeyboard();
-  const {theme, themeType} = useDooboo();
+  const {theme} = useDooboo();
 
   const passwordRef = useRef<TextInput>(null);
   const [email, setEmail] = useState('');
@@ -54,7 +53,8 @@ export default function SignInModal(): ReactElement {
             Linking.openURL('https://dooboo.io/termsofservice');
           }}
           style={css`
-            text-decoration-line: underline;
+            color: ${theme.role.primary};
+            font-family: Pretendard-Bold;
           `}
         >
           {str}
@@ -73,29 +73,6 @@ export default function SignInModal(): ReactElement {
     canGoBack() ? back() : replace('/');
   };
 
-  const handleSignInApple = async (): Promise<void> => {
-    try {
-      const credential = await AppleAuthentication.signInAsync({
-        requestedScopes: [
-          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-          AppleAuthentication.AppleAuthenticationScope.EMAIL,
-        ],
-      });
-
-      const {identityToken} = credential;
-
-      console.log('sign-in apple', identityToken);
-    } catch (e: any) {
-      if (
-        e.code === 'ERR_REQUEST_CANCELED' ||
-        e.code === 'ERR_CANCELED' ||
-        e.code === 'ERR_REQUEST_UNKNOWN'
-      ) {
-        return;
-      }
-    }
-  };
-
   return (
     <Container>
       <ModalHeader>
@@ -109,111 +86,96 @@ export default function SignInModal(): ReactElement {
           align-items: center;
         `}
       >
-        <Content>
-          <ButtonSocialSignIn
-            provider="google"
-            text={t('LOGIN_WITH', {name: 'Google'})}
-            // onUserCreated={handleSocialUserCreated}
-          />
-          <ButtonSocialSignIn
+        {/* Title */}
+        <Typography.Heading1
+          style={css`
+            margin-top: -8px;
+            margin-bottom: 20px;
+          `}
+        >
+          dooboo .{' '}
+          <Typography.Heading1
             style={css`
-              margin-bottom: 12px;
-            `}
-            provider="facebook"
-            text={t('LOGIN_WITH', {name: 'Facebook'})}
-            // onUserCreated={handleSocialUserCreated}
-          />
-          {Platform.OS === 'ios' ? (
-            <AppleAuthentication.AppleAuthenticationButton
-              buttonType={
-                AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
-              }
-              buttonStyle={
-                themeType === 'light'
-                  ? AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
-                  : AppleAuthentication.AppleAuthenticationButtonStyle.WHITE
-              }
-              cornerRadius={4}
-              style={css`
-                height: 48px;
-              `}
-              onPress={handleSignInApple}
-            />
-          ) : null}
-          <Typography.Body2
-            style={css`
-              font-family: Pretendard-Bold;
-              color: ${theme.text.placeholder};
-              align-self: center;
+              color: ${theme.role.primary};
             `}
           >
-            {t('OR')}
-          </Typography.Body2>
-          <EditText
-            decoration="boxed"
-            placeholder={t('EMAIL')}
-            // editable={!isInFlight}
-            styles={{
-              container: css`
-                border-radius: 4px;
-              `,
-            }}
-            value={email}
-            onChangeText={(text) => {
-              setErrorMessage('');
-              setEmail(text.trim());
-            }}
-            onSubmitEditing={() => {
-              passwordRef.current?.focus();
-            }}
-            endElement={
-              email ? (
+            pro
+          </Typography.Heading1>
+        </Typography.Heading1>
+        <Content>
+          {/* Email / PW Inputs */}
+          <View
+            style={css`
+              gap: 10px;
+            `}
+          >
+            <EditText
+              decoration="boxed"
+              placeholder={t('EMAIL')}
+              // editable={!isInFlight}
+              styles={{
+                container: css`
+                  border-radius: 4px;
+                `,
+              }}
+              value={email}
+              onChangeText={(text) => {
+                setErrorMessage('');
+                setEmail(text.trim());
+              }}
+              onSubmitEditing={() => {
+                passwordRef.current?.focus();
+              }}
+              endElement={
+                email ? (
+                  <Button
+                    onPress={() => setEmail('')}
+                    text={
+                      <Icon
+                        name="XCircleFill"
+                        size={16}
+                        color={theme.text.basic}
+                      />
+                    }
+                    type="text"
+                  />
+                ) : undefined
+              }
+            />
+
+            <EditText
+              inputRef={passwordRef}
+              decoration="boxed"
+              styles={{
+                container: css`
+                  border-radius: 4px;
+                `,
+              }}
+              placeholder={t('PASSWORD')}
+              // editable={!isInFlight}
+              secureTextEntry={isSecure}
+              endElement={
                 <Button
-                  onPress={() => setEmail('')}
+                  onPress={() => setIsSecure(!isSecure)}
                   text={
                     <Icon
-                      name="XCircleFill"
-                      size={16}
-                      color={theme.role.primary}
+                      name={isSecure ? 'EyeSlash' : 'Eye'}
+                      size={18}
+                      color={theme.text.basic}
                     />
                   }
                   type="text"
                 />
-              ) : undefined
-            }
-          />
-          <EditText
-            inputRef={passwordRef}
-            decoration="boxed"
-            styles={{
-              container: css`
-                border-radius: 4px;
-              `,
-            }}
-            placeholder={t('PASSWORD')}
-            // editable={!isInFlight}
-            secureTextEntry={isSecure}
-            endElement={
-              <Button
-                onPress={() => setIsSecure(!isSecure)}
-                text={
-                  <Icon
-                    name={isSecure ? 'EyeSlash' : 'Eye'}
-                    size={18}
-                    color={theme.role.primary}
-                  />
-                }
-                type="text"
-              />
-            }
-            value={password}
-            onChangeText={(text) => {
-              setErrorMessage('');
-              setPassword(text.trim());
-            }}
-            onSubmitEditing={handleSignIn}
-            error={errorMessage}
-          />
+              }
+              value={password}
+              onChangeText={(text) => {
+                setErrorMessage('');
+                setPassword(text.trim());
+              }}
+              onSubmitEditing={handleSignIn}
+              error={errorMessage}
+            />
+          </View>
 
           <Button
             text={t('SIGN_IN')}
@@ -231,6 +193,45 @@ export default function SignInModal(): ReactElement {
             }}
           />
 
+          <Typography.Body2
+            style={css`
+              font-family: Pretendard-Bold;
+              color: ${theme.text.placeholder};
+              align-self: center;
+            `}
+          >
+            {t('OR')}
+          </Typography.Body2>
+
+          <View
+            style={css`
+              flex-direction: row;
+              justify-content: center;
+              gap: 20px;
+            `}
+          >
+            {Platform.OS === 'ios' ? (
+              <ButtonSocialSignIn
+                provider="apple"
+                text={t('LOGIN_WITH', {name: 'Apple'})}
+                // onUserCreated={handleSocialUserCreated}
+              />
+            ) : null}
+            <ButtonSocialSignIn
+              provider="google"
+              text={t('LOGIN_WITH', {name: 'Google'})}
+              // onUserCreated={handleSocialUserCreated}
+            />
+            <ButtonSocialSignIn
+              style={css`
+                margin-bottom: 12px;
+              `}
+              provider="facebook"
+              text={t('LOGIN_WITH', {name: 'Facebook'})}
+              // onUserCreated={handleSocialUserCreated}
+            />
+          </View>
+
           <View
             style={css`
               margin-top: 8px;
@@ -246,11 +247,11 @@ export default function SignInModal(): ReactElement {
                   color: ${theme.text.placeholder};
                 `}
               >
-                {t('NO_ACCOUNT') + '\n'}
+                {t('NO_ACCOUNT')}
                 <Typography.Body2
                   style={css`
                     font-family: Pretendard-Bold;
-                    color: ${theme.role.primary};
+                    color: ${theme.text.basic};
                   `}
                 >
                   {` ${t('CREATE_ACCOUNT')}`}
@@ -263,6 +264,7 @@ export default function SignInModal(): ReactElement {
             style={css`
               text-align: center;
               color: ${theme.text.placeholder};
+              line-height: 20px;
             `}
           >
             {renderAgreements(

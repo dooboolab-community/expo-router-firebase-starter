@@ -3,7 +3,8 @@ import {useEffect} from 'react';
 import type {StyleProp, ViewStyle} from 'react-native';
 import {Platform} from 'react-native';
 import {css} from '@emotion/native';
-import {Button, Icon, useDooboo} from 'dooboo-ui';
+import {Button, Icon, IconButton, useDooboo} from 'dooboo-ui';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import {Prompt, ResponseType} from 'expo-auth-session';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
@@ -71,7 +72,7 @@ export function ButtonSocialSignIn({
   }, [googleResponse, facebookResponse]);
 
   return (
-    <Button
+    <IconButton
       // loading={isGoogleInFlight || isFacebookInFlight}
       disabled={provider === 'google' ? !googleRequest : !facebookRequest}
       onPress={() => {
@@ -86,35 +87,22 @@ export function ButtonSocialSignIn({
           // Not implemented yet
         }
       }}
-      text={text}
-      startElement={
-        <Icon
-          name={
-            provider === 'apple'
-              ? 'AppleLogo'
-              : provider === 'facebook'
-              ? 'FacebookLogo'
-              : provider === 'github'
-              ? 'GithubLogo'
-              : 'GoogleLogo'
-          }
-          size={16}
-          style={css`
-            margin-right: 5px;
-            color: ${theme.text.contrast};
-          `}
-        />
+      icon={
+        provider === 'apple'
+          ? 'AppleLogo'
+          : provider === 'facebook'
+          ? 'FacebookLogo'
+          : provider === 'github'
+          ? 'GithubLogo'
+          : 'GoogleLogo'
       }
       touchableHighlightProps={{
         underlayColor: theme.text.contrast,
+        accessibilityLabel: text,
       }}
       styles={{
         container: css`
           background-color: ${colors[provider] || theme.text.basic};
-        `,
-        text: css`
-          color: ${theme.text.contrast};
-          font-size: 18px;
         `,
       }}
     />

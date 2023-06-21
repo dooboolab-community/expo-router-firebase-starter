@@ -9,6 +9,7 @@
   "EMAIL": "이메일",
   "PASSWORD": "비밀번호",
   "SIGN_IN": "로그인",
+  "SIGN_IN_WITH_PROVIDER": "{{provider}} 로그인",
   "NO_ACCOUNT": "계정이 없으신가요?",
   "CREATE_ACCOUNT": "계정 만들기",
   "SIGN_UP_POLICY_AGREEMENT": "다음 단계로 진행함으로써 {{termsForAgreement}}와 {{privacyAndPolicy}}에 동의하는 것으로 간주합니다.",
