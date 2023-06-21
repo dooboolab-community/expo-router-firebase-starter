@@ -9,6 +9,7 @@ const config = getDefaultConfig(__dirname);
 
 config.transformer = {
   ...config.transformer,
+  babelTransformerPath: require.resolve("react-native-svg-transformer"),
   asyncRequireModulePath: require.resolve("@expo/metro-runtime/async-require"),
 };
 
@@ -23,6 +24,12 @@ config.watcher = {
   healthCheck: {
     enabled: true,
   },
+};
+
+config.resolver = {
+  ...config.resolver,
+  assetExts: config.resolver.assetExts.filter((ext) => ext !== "svg"),
+  sourceExts: [...config.resolver.sourceExts, "svg"],
 };
 
 module.exports = config;
