@@ -84,6 +84,7 @@ export default function SignInModal(): ReactElement {
           userPassword,
         );
         const user = authResult.user;
+        console.log('email user', user);
 
         return user;
       } catch (error) {
