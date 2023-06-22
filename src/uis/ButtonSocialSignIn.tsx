@@ -3,12 +3,16 @@ import {useEffect} from 'react';
 import type {StyleProp, ViewStyle} from 'react-native';
 import {Platform} from 'react-native';
 import {css} from '@emotion/native';
-import {Button, Icon, IconButton, useDooboo} from 'dooboo-ui';
+import {IconButton, useDooboo} from 'dooboo-ui';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import {makeRedirectUri, Prompt, ResponseType} from 'expo-auth-session';
+import {Prompt, ResponseType} from 'expo-auth-session';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
-import Constants, {ExecutionEnvironment} from 'expo-constants';
+import {
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  signInWithCredential,
+} from 'firebase/auth';
 
 import {
   expoProjectId,
@@ -17,6 +21,7 @@ import {
   googleClientIdIOS,
   googleClientIdWeb,
 } from '../../config';
+import {auth} from '../firebase';
 import {colors} from '../theme';
 
 export type Provider = 'apple' | 'facebook' | 'google' | 'github';
@@ -28,11 +33,7 @@ type Props = {
   onUserCreated?: () => void;
 };
 
-export function ButtonSocialSignIn({
-  onUserCreated,
-  text,
-  provider,
-}: Props): ReactElement {
+export function ButtonSocialSignIn({text, provider}: Props): ReactElement {
   const {theme} = useDooboo();
 
   const appleLogin = async (): Promise<void> => {
@@ -72,16 +73,22 @@ export function ButtonSocialSignIn({
     });
 
   useEffect(() => {
-    if (googleResponse?.type === 'success' && googleResponse.authentication) {
-      const accessToken = googleResponse.authentication.accessToken;
-      console.log('google accessToken', accessToken);
-    } else if (
-      facebookResponse?.type === 'success' &&
-      facebookResponse.authentication
-    ) {
-      const accessToken = facebookResponse.authentication.accessToken;
-      console.log('facebook accessToken', accessToken);
-    }
+    const handleSignIn = async (): Promise<void> => {
+      if (googleResponse?.type === 'success' && googleResponse.authentication) {
+        const accessToken = googleResponse.authentication.accessToken;
+        const credential = GoogleAuthProvider.credential(null, accessToken);
+        await signInWithCredential(auth, credential);
+      } else if (
+        facebookResponse?.type === 'success' &&
+        facebookResponse.authentication
+      ) {
+        const accessToken = facebookResponse.authentication.accessToken;
+        const credential = FacebookAuthProvider.credential(accessToken);
+        await signInWithCredential(auth, credential);
+      }
+    };
+
+    handleSignIn();
 
     return () => {};
   }, [googleResponse, facebookResponse]);
