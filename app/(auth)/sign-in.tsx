@@ -5,7 +5,10 @@ import {Linking, Platform, ScrollView, View} from 'react-native';
 import styled, {css} from '@emotion/native';
 import {Button, EditText, Icon, Typography, useDooboo} from 'dooboo-ui';
 import {Link, useNavigation, useRouter} from 'expo-router';
+import type {User} from 'firebase/auth';
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
+import {auth} from '../../src/firebase';
 import useKeyboard from '../../src/hooks/useKeyboard';
 import {t} from '../../src/STRINGS';
 import ButtonSocialSignIn from '../../src/uis/ButtonSocialSignIn';
@@ -70,6 +73,27 @@ export default function SignInModal(): ReactElement {
       return;
     }
 
+    const loginUser = async (
+      userEmail: string,
+      userPassword: string,
+    ): Promise<User> => {
+      try {
+        const authResult = await signInWithEmailAndPassword(
+          auth,
+          userEmail,
+          userPassword,
+        );
+        const user = authResult.user;
+
+        return user;
+      } catch (error) {
+        console.log('Error login user:', error);
+
+        return null;
+      }
+    };
+
+    loginUser(email, password);
     canGoBack() ? back() : replace('/');
   };
 
