@@ -1,5 +1,5 @@
 import {getApp, getApps, initializeApp} from 'firebase/app';
-import {browserLocalPersistence, getAuth, setPersistence} from 'firebase/auth';
+import {getAuth} from 'firebase/auth';
 
 import {
   appId,
@@ -24,5 +24,3 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
-
-setPersistence(auth, browserLocalPersistence);
