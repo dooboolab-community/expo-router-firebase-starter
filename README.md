@@ -53,3 +53,33 @@ eas build --profile development --platform android
 In case your build process fails due to the presence of `google-services.json` and `GoogleService-Info.plist` files in the `.gitignore` file, you can try a temporary fix. Simply remove these files from `.gitignore` and re-run the build commands. Once the build succeeds, make sure to add them back to `.gitignore`. This is important because these files shouldn't be part of the version control.
 
 After the development build is finished, head to [Expo's website](https://expo.io) to download it. If you are working on an iOS app, you can find guidance on how to install your build on simulators through [this link](https://docs.expo.dev/build-reference/simulators/#installing-your-build-on-the-simulator). For Android, check out [this link](https://docs.expo.dev/build-reference/apk) which provides steps for creating APKs for emulators and devices.
+
+## Firebase setting 
+
+In order to use this project, please follow the configuration guide below 
+
+1. Create .env file
+```sh
+cp .env.sample .env
+```
+
+2. Create a new firebase project and add following values
+- apiKey 
+- authDomain
+- projectId
+- storageBucket
+- messagingSenderId
+- appId
+- measurementId
+
+you can find these options in 
+
+```sh
+firebase -> [your project name] -> web app -> project setting
+```
+3. Add Google Client id
+ * web
+ * ios
+ * android
+   
+4. Add Facebook app id (developer.facebook.com/apps/) 
